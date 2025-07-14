@@ -1,0 +1,7 @@
+# Ignore directories
+CRBT_MIS_REPORT/
+env/
+
+# Ignore CSV files
+unique_numbers.csv
+*.csv
