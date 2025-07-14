@@ -104,7 +104,7 @@ The script implements multi-level deduplication:
 4. **Verification**: Double-checks final output for any remaining duplicates
 5. **Statistics**: Provides detailed deduplication metrics
 
-## Error Handling
+## Error Handling and Progress Tracking
 
 The script handles:
 
@@ -115,7 +115,7 @@ The script handles:
 - Numeric vs string phone number formats
 - Empty or invalid data entries
 
-## Performance
+## Performance Features
 
 - Efficiently processes large datasets (tested with 100+ files)
 - Memory-efficient using Python sets for deduplication
