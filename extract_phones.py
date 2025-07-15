@@ -1,7 +1,6 @@
 import pandas as pd
 import argparse
 import os
-import glob
 from pathlib import Path
 
 
@@ -48,23 +47,24 @@ def extract_unique_phone_numbers(input_path, output_file):
         files_processed = 1
     elif os.path.isdir(input_path):
         # Directory processing - process all Excel files
-        excel_files = glob.glob(os.path.join(
-            input_path, "*.xlsx")) + glob.glob(os.path.join(input_path, "*.xls"))
-
+        excel_files = os.scandir(input_path)
         if not excel_files:
             print(f"❌ No Excel files found in directory: {input_path}")
             return
 
-        print(f"🔍 Found {len(excel_files)} Excel files to process")
+        print(f"🔍 Found {len(list(excel_files))} Excel files to process")
 
         for excel_file in excel_files:
-            phone_numbers = extract_unique_phone_numbers_from_file(excel_file)
-            files_processed += 1
+            if excel_file.name.endswith(('.xlsx', '.xls')):
+                full_file_path = os.path.join(input_path, excel_file.name)
+                print(full_file_path)
+                phone_numbers = extract_unique_phone_numbers_from_file(full_file_path)
+                files_processed += 1
 
             # Count raw numbers for deduplication tracking
             try:
-                df = pd.read_excel(excel_file, sheet_name='Sheet0',
-                                   engine='xlrd' if excel_file.endswith('.xls') else 'openpyxl')
+                df = pd.read_excel(full_file_path, sheet_name='Sheet0',
+                                   engine='xlrd' if full_file_path.endswith('.xls') else 'openpyxl')
                 df.columns = [col.strip() for col in df.columns]
                 if 'MSISDN' in df.columns:
                     raw_count = len(df['MSISDN'].dropna())

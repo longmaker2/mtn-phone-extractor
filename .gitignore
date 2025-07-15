@@ -5,3 +5,4 @@ env/
 # Ignore CSV files
 unique_numbers.csv
 *.csv
+.venv/
